@@ -7,13 +7,15 @@ def load_data():
     df.columns = df.columns.str.strip()  
     return df
 
-def filter_data(df, company_name, sector, symbol, supplier_company, customer_company):
+def filter_data(df, company_name, sector, sub_sector, symbol, supplier_company, customer_company):
     filtered_df = df
     
     if company_name:
         filtered_df = filtered_df[filtered_df['COMPANY NAME'].str.contains(company_name, case=False, na=False)]
     if sector:
         filtered_df = filtered_df[filtered_df['SECTOR'].str.contains(sector, case=False, na=False)]
+    if sub_sector:
+        filtered_df = filtered_df[filtered_df['SUB SECTOR'].str.contains(sub_sector, case=False, na=False)]
     if symbol:
         filtered_df = filtered_df[filtered_df['SYMBOL'].str.contains(symbol, case=False, na=False)]
     if supplier_company:
@@ -39,6 +41,8 @@ def main():
     company_name = st.sidebar.selectbox("Select Company Name", [""] + list(df['COMPANY NAME'].unique()))
     
     sector = st.sidebar.selectbox("Select Sector", [""] + list(df['SECTOR'].unique()))
+
+    sub_sector = st.sidebar.selectbox("Select Sub Sector", [""] + list(df['SUB SECTOR'].unique()))
     
     symbol = st.sidebar.selectbox("Select Symbol", [""] + list(df['SYMBOL'].unique()))
     
@@ -46,7 +50,7 @@ def main():
     
     customer_company = st.sidebar.selectbox("Select Customer's Company", [""] + list(df['CUSTOMER COMPANY'].unique()))
     
-    filtered_df = filter_data(df, company_name, sector, symbol, supplier_company, customer_company)
+    filtered_df = filter_data(df, company_name, sector, sub_sector, symbol, supplier_company, customer_company)
 
     selected_sector = st.sidebar.selectbox("Select Sector for Occurrence", filtered_df['SECTOR'].unique())
     
